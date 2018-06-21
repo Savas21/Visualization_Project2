@@ -23,7 +23,7 @@ function buildCharts(sampleData) {
     console.log(ct_countries);
     var color_int = []; // to build a color reference number for each row based on country name
     var color_ref = {}; // dictionary for color reference of each country
-    var i = 0;
+    var i = 6;
     uniq_countries.forEach(function(x){color_ref[x]=i; i = i + 40;});
     countries.forEach(function(x){color_int.push(color_ref[x])});
     console.log(color_int);
@@ -34,17 +34,21 @@ function buildCharts(sampleData) {
         height: 800,
         width: 1200,
         hovermode: 'closest',
-        xaxis: { title: 'Prices' }
+        xaxis: { title: 'Prices' },
+        title: 'Price vs. Points Based on "Variety"',
+        showlegend: false,
+        plot_bgcolor: '#d9d9d9',
     };
     var bubbleData = [{
-        x: prices,
-        y: points,
-        text: countries,
+        x: countries,
+        y: prices,
+        text: points,
         mode: 'markers',
         marker: {
-            size: points.map(function(x){return x-75}),
+            size: points.map(function(x){return (x-70)*2}),
             color: color_int,
             colorscale: "Earth",
+            opacity: 0.4,
         }
     }];
     var BUBBLE = document.getElementById('Bubble');
@@ -76,17 +80,17 @@ function updateCharts(sampleData) {
     console.log(ct_countries);
     var color_int = []; // to build a color reference number for each row based on country name
     var color_ref = {}; // dictionary for color reference of each country
-    var i = 0;
+    var i = 6;
     uniq_countries.forEach(function(x){color_ref[x]=i; i = i + 40;});
     countries.forEach(function(x){color_int.push(color_ref[x])});
     console.log(color_int);
     // var OtuIDs = otuIDs.map(String)
     // Update the Bubble Chart with the new data
     var BUBBLE = document.getElementById('Bubble');
-    Plotly.restyle(BUBBLE, 'x', [prices]);
-    Plotly.restyle(BUBBLE, 'y', [points]);
-    Plotly.restyle(BUBBLE, 'text', [countries]);
-    Plotly.restyle(BUBBLE, 'marker.size', [points.map(function(x){return x-75})]);
+    Plotly.restyle(BUBBLE, 'x', [countries]);
+    Plotly.restyle(BUBBLE, 'y', [prices]);
+    Plotly.restyle(BUBBLE, 'text', [points]);
+    Plotly.restyle(BUBBLE, 'marker.size', [points.map(function(x){return (x-70)*2})]);
     Plotly.restyle(BUBBLE, 'marker.color', [color_int]);
     // Update the Pie Chart with the new data
     // Use slice to select only the top 10 OTUs for the pie chart
